@@ -1,0 +1,14 @@
+GET http://localhost:3001/todos
+
+###
+
+POST http://localhost:3001/todo/new
+Content-Type: application/json
+
+{
+    "text" : "Itachi"
+}
+
+###
+
+DELETE http://localhost:3001/todo/delete/619901484dc5dc61b4c845c3x
