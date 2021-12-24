@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import About from "./components/About";
+
 const api_base = "http://localhost:3001";
 
 function App() {
@@ -59,58 +63,72 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <h1>To Do List</h1>
-      <h4>Your tasks</h4>
+    <Router>
+      <div className="App">
+        <div className="my-3">
+          <Navbar></Navbar>
+        </div>
+        <h2>To Do List</h2>
+        <h4>Your tasks</h4>
+        <div className="todos">
+          <div className="container my-5">
+            <Routes>
+              <Route path="/" />
+              <Route path="/about" element={<About />} />
+            </Routes>
+          </div>
 
-      <div className="todos">
-        {todos.length > 0 ? (
-          todos.map((todo) => (
-            <div
-              className={"todo" + (todo.complete ? " is-complete" : "")}
-              key={todo._id}
-              onClick={() => completeTodo(todo._id)}
-            >
-              <div className="checkbox"></div>
+          {todos.length > 0 ? (
+            todos.map((todo) => (
+              <div
+                className={"todo" + (todo.complete ? " is-complete" : "")}
+                key={todo._id}
+                onClick={() => completeTodo(todo._id)}
+              >
+                <div className="checkbox"></div>
 
-              <div className="text">{todo.text}</div>
+                <div className="text">{todo.text}</div>
 
-              <div className="delete-todo" onClick={() => deleteTodo(todo._id)}>
-                x
+                <div
+                  className="delete-todo"
+                  onClick={() => deleteTodo(todo._id)}
+                >
+                  x
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>You currently have no tasks</p>
+          )}
+        </div>
+
+        <div className="addPopup" onClick={() => setPopupActive(true)}>
+          +
+        </div>
+
+        {popupActive ? (
+          <div className="popup">
+            <div className="closePopup" onClick={() => setPopupActive(false)}>
+              X
+            </div>
+            <div className="content">
+              <h3>Add Task</h3>
+              <input
+                type="text"
+                className="add-todo-input"
+                onChange={(e) => setNewTodo(e.target.value)}
+                value={newTodo}
+              />
+              <div className="button" onClick={addTodo}>
+                Create Task
               </div>
             </div>
-          ))
+          </div>
         ) : (
-          <p>You currently have no tasks</p>
+          ""
         )}
       </div>
-
-      <div className="addPopup" onClick={() => setPopupActive(true)}>
-        +
-      </div>
-
-      {popupActive ? (
-        <div className="popup">
-          <div className="closePopup" onClick={() => setPopupActive(false)}>
-            X
-          </div>
-          <div className="content">
-            <h3>Add Task</h3>
-            <input
-              type="text"
-              className="add-todo-input"
-              onChange={(e) => setNewTodo(e.target.value)}
-              value={newTodo}
-            />
-            <div className="button" onClick={addTodo}>
-              Create Task
-            </div>
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
-    </div>
+    </Router>
   );
 }
 
